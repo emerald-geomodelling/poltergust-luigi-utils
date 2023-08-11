@@ -15,6 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         "luigi",
+        "requests",
         "google-auth",
         "google-api-python-client",
     ],
