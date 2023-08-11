@@ -1,5 +1,6 @@
 import yaml
 import luigi.contrib.opener
+import os
 from . import gcs_opener
 from . import luigi_client
 
