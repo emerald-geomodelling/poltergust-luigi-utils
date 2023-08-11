@@ -1,1 +1,1 @@
-from gcs_opener import *
+from .gcs_opener import *
