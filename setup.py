@@ -4,7 +4,7 @@ import setuptools
 
 setuptools.setup(
     name='poltergust-luigi-utils',
-    version='0.0.4',
+    version='0.0.5',
     description='Luigi utils',
     long_description='''Luigi utils for use together with Poltergust
 ''',
