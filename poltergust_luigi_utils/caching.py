@@ -45,7 +45,9 @@ class CachingOpenerTarget():
 
     def __enter__(self):
         self.ensure()
-        return self.cachetarget.url
+        if hasattr(self.cachetarget, "url"):
+            return self.cachetarget.url
+        return self.cachetarget.path
         
     def __exit__(self):
         pass
