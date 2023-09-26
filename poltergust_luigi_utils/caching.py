@@ -39,7 +39,15 @@ class CachingOpenerTarget():
         if self.cachetarget.exists(): return True
         if self.target.exists(): return True
         return False
-    
+
+    @property
+    def url(self):
+        if hasattr(self.target, "url"):
+            return self.target.url
+        if not self.target.path.startswith("/"):
+            return self.target.path
+        return "file://" + self.target.path
+        
     def __getattr__(self, name):
         return getattr(self.target, name)
 
