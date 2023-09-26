@@ -42,7 +42,7 @@ class LoggingTask(object):
     logging_count = 0
 
     logging_formatter_yaml = False
-    logging_formatter_yaml_include = ["time", "extra", "task", "message"]
+    logging_formatter_yaml_include = ["time", "extra", "task", "msg"]
 
     def get_logging_formatter(self):
         if self.logging_formatter_yaml:
