@@ -46,7 +46,7 @@ class LoggingTask(object):
 
     def get_logging_formatter(self):
         if self.logging_formatter_yaml:
-            return YamlFormatter(task=str(self), include=logging_formatter_yaml_include)
+            return YamlFormatter(task=str(self), include=self.logging_formatter_yaml_include)
         else:
             return logging.Formatter(
                 fmt="%(asctime)s " +  str(self) + ": %(message)s")
