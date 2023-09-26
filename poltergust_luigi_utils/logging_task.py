@@ -7,7 +7,6 @@ import luigi.contrib.gcs
 import luigi.format
 import luigi.mock
 import luigi.local_target
-import pieshell
 import traceback
 import math
 import time
@@ -22,13 +21,17 @@ import yaml
 
 
 class YamlFormatter(logging.Formatter):
-    def __init__(self, **kw):
+    def __init__(self, include=False, **kw):
         logging.Formatter.__init__(self)
+        self.include = include
         self.kw = kw
         
     def format(self, record):
         d = dict(self.kw)
         d.update(record.__dict__)
+        d["time"] = self.formatTime(record)
+        if self.include is not True:
+            d = {k:v for k, v in d.items() if k in self.include}
         return yaml.safe_dump([d])
 
 class LoggingTask(object):
@@ -39,14 +42,14 @@ class LoggingTask(object):
     logging_count = 0
 
     logging_formatter_yaml = False
-    
+    logging_formatter_yaml_include = ["time", "extra", "task"]
+
     def get_logging_formatter(self):
         if self.logging_formatter_yaml:
-            return YamlFormatter(task=str(self))
+            return YamlFormatter(task=str(self), include=logging_formatter_yaml_include)
         else:
             return logging.Formatter(
-                fmt="%(asctime)s " +  str(self) + ": %(message)s",
-                datefmt="%Y-%m-%d %H-%M-%S.%f")
+                fmt="%(asctime)s " +  str(self) + ": %(message)s")
     
     @contextlib.contextmanager
     def logging(self, rethrow_errors=True):
