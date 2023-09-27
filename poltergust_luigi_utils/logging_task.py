@@ -42,14 +42,14 @@ class LoggingTask(object):
     logging_count = 0
 
     logging_formatter_yaml = False
-    logging_formatter_yaml_include = ["time", "extra", "task", "msg"]
+    logging_formatter_yaml_include = ["time", "extra", "msg"]
 
     def get_logging_formatter(self):
         if self.logging_formatter_yaml:
-            return YamlFormatter(task=str(self), include=self.logging_formatter_yaml_include)
+            return YamlFormatter(include=self.logging_formatter_yaml_include)
         else:
             return logging.Formatter(
-                fmt="%(asctime)s " +  str(self) + ": %(message)s")
+                fmt="%(asctime)s: %(message)s")
     
     @contextlib.contextmanager
     def logging(self, rethrow_errors=True):
