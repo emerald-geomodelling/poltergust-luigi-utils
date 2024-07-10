@@ -1,7 +1,9 @@
 import os.path
 import contextlib
 import luigi.contrib.opener
+import traceback
 import shutil
+import time
 
 cachedir = os.path.expanduser(os.environ.get("POLTERGUST_CACHE", "~/.cache/poltergust-luigi-utils"))
 
@@ -18,10 +20,18 @@ class CachingOpenerTarget():
 
     def ensure(self):
         if not self.cachetarget.exists():
-            with self.target.open() as fr:
-                with self.cachetarget.open("w") as fw:
-                    shutil.copyfileobj(fr, fw)
-                    
+            for i in range(60):
+                try:
+                    with self.target.open() as fr:
+                        with self.cachetarget.open("w") as fw:
+                            shutil.copyfileobj(fr, fw)
+                except Exception as e:
+                    print("Unable to download %s: %s (waiting %s seconds to retry)" % (self.target, e, i))
+                    traceback.print_exc()
+                    time.sleep(i)
+                else:
+                    return
+                              
     @contextlib.contextmanager
     def open(self, mode="r"):
         if mode == "r":
